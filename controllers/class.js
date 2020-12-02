@@ -1,15 +1,15 @@
 // 引入公共方法
-const Common = require('../utils/common');
+const Common = require("../utils/common");
 
 // 引入Class表的model
-const ClassModel = require('../models/class');
+const ClassModel = require("../models/class");
 
 // 引入常量
-const Constant = require('../constant/constant');
+const Constant = require("../constant/constant");
 
 // 配置对象
 let exportObj = {
-  info
+  info,
 };
 // 导出对象，供其它模块调用
 module.exports = exportObj;
@@ -23,19 +23,19 @@ function info(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.params, ['stage', 'grade', 'term'], cb);
+      Common.checkParams(req.params, ["stage", "grade", "term"], cb);
     },
     // 查询方法，依赖校验参数方法
     query: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         let whereCondition = {
           stage: req.query.stage,
           grade: req.query.grade,
-          term: req.query.term
+          term: req.query.term,
         };
         let searchOption = {
-          where: whereCondition
+          where: whereCondition,
         };
         // 使用admin的model中的方法查询
         ClassModel.findOne(searchOption)
@@ -49,7 +49,7 @@ function info(req, res) {
                 stage: result.stage,
                 grade: result.grade,
                 term: result.term,
-                cname: result.cname
+                cname: result.cname,
               };
               // 继续后续操作
               cb(null);

@@ -1,20 +1,20 @@
 // 引入公共方法
-const Common = require('../utils/common');
+const Common = require("../utils/common");
 
 // 引入bool表的model
-const BookModel = require('../models/book');
+const BookModel = require("../models/book");
 //引入class表的model
-const ClassModel = require('../models/class');
+const ClassModel = require("../models/class");
 
 // 引入常量
-const Constant = require('../constant/constant');
+const Constant = require("../constant/constant");
 
 // 引入dateformat包
-const dateFormat = require('dateformat');
+const dateFormat = require("dateformat");
 
 // 配置对象
 let exportObj = {
-  info
+  info,
 };
 // 导出对象，供其它模块调用
 module.exports = exportObj;
@@ -28,17 +28,17 @@ function info(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.params, ['classid'], cb);
+      Common.checkParams(req.params, ["classid"], cb);
     },
     // 查询方法，依赖校验参数方法
     query: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         let whereCondition = {
-          classid: req.query.classid
+          classid: req.query.classid,
         };
         let searchOption = {
-          where: whereCondition
+          where: whereCondition,
         };
         // 使用admin的model中的方法查询
         BookModel.findAndCountAll(searchOption)
@@ -52,14 +52,14 @@ function info(req, res) {
                 bname: v.bname,
                 classid: v.classid,
                 cover: v.cover,
-                createdAt: dateFormat(v.createdAt, 'yyyy-mm-dd HH:MM:ss')
+                createdAt: dateFormat(v.createdAt, "yyyy-mm-dd HH:MM:ss"),
               };
               list.push(obj);
             });
             // 将查询到的结果给返回对象赋值
             resObj.data = {
               list,
-              count: result.count
+              count: result.count,
             };
             // 继续后续操作
             cb(null);

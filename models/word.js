@@ -1,58 +1,58 @@
 // 引入Sequelize模块
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 // 引入数据库实例
-const seque = require('../utils/seque');
+const seque = require("../utils/seque");
 
-const BookModel = require('../models/book');
-const WordbookModel = require('../models/wordbook');
+const BookModel = require("../models/book");
+const WordbookModel = require("../models/wordbook");
 
 // 定义model
 const Word = seque.define(
-  'Word',
+  "Word",
   {
     // 主键
     wid: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true
+      autoIncrement: true,
     },
     // 单词
     word: {
       type: Sequelize.STRING(60),
-      allowNull: false
+      allowNull: false,
     },
     // 拼写
     spell: {
       type: Sequelize.STRING(90),
-      allowNull: false
+      allowNull: false,
     },
     // 音调
     voice: {
       type: Sequelize.STRING(255),
-      allowNull: false
+      allowNull: false,
     },
     // 单复数
     plural: {
       type: Sequelize.STRING(30),
-      allowNull: false
+      allowNull: false,
     },
     // 现在时
     doing: {
       type: Sequelize.STRING(60),
-      allowNull: false
+      allowNull: false,
     },
     // 过去式
     done: {
       type: Sequelize.STRING(60),
-      allowNull: false
-    }
+      allowNull: false,
+    },
   },
   {
     // 是否支持驼峰
     underscored: true,
     // mysql数据库表名
-    tableName: 'stu_words'
+    tableName: "stu_words",
   }
 );
 

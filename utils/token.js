@@ -5,9 +5,9 @@
  * */
 
 // 引入jsonwebtoken包 生成token及验证
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 // 设定一个密匙，用来加密和解密Token
-const tokenkey = 'erqwd8_05cW7!@50ETnkdF9zo#W7!@50ETnk';
+const tokenkey = "erqwd8_05cW7!@50ETnkdF9zo#W7!@50ETnk";
 
 // 定义一个对象
 const Token = {
@@ -18,7 +18,7 @@ const Token = {
    * @returns {*} 返回一个Token
    */
   encrypt: function (data, time) {
-    return jwt.sign(data, tokenkey, {expiresIn: time});
+    return jwt.sign(data, tokenkey, { expiresIn: time });
   },
 
   /*
@@ -33,12 +33,12 @@ const Token = {
       let data = jwt.verify(token, tokenkey);
       return {
         token: true,
-        data: data
+        data: data,
       };
     } catch (e) {
       return {
         token: false,
-        data: e
+        data: e,
       };
     }
   },

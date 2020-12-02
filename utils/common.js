@@ -6,16 +6,16 @@
  */
 
 // 引入async模块 使用异步处理方法库
-const async = require('async');
+const async = require("async");
 
 // 引入常量模块
-const Constant = require('../constant/constant');
+const Constant = require("../constant/constant");
 // 定义一个对象
 const exportObj = {
   clone,
   checkParams,
   autoFn,
-  getImgUrl
+  getImgUrl,
 };
 // 导出对象，方便其他方法调用
 module.exports = exportObj;
@@ -61,7 +61,7 @@ function autoFn(tasks, res, resObj) {
       console.log(JSON.stringify(err));
       res.json({
         code: err.code || Constant.DEFAULT_ERROR.code,
-        msg: err.msg || JSON.stringify(err)
+        msg: err.msg || JSON.stringify(err),
       });
     } else {
       res.json(resObj);
@@ -77,10 +77,10 @@ function autoFn(tasks, res, resObj) {
  */
 function getImgUrl(req, imgName) {
   // 获取当前域名，用于组装图片路径
-  const imgPath = req.protocol + '://' + req.get('host');
+  const imgPath = req.protocol + "://" + req.get("host");
 
   if (!imgName) {
-    return '';
+    return "";
   }
-  return imgPath + '/upload/' + imgName;
+  return imgPath + "/upload/" + imgName;
 }

@@ -1,19 +1,19 @@
 // 引入公共方法
-const Common = require('../utils/common');
+const Common = require("../utils/common");
 
 // 引入user表的model
-const UserModel = require('../models/user');
+const UserModel = require("../models/user");
 
 // 引入字典表的model
-const DictModel = require('../models/dict');
+const DictModel = require("../models/dict");
 
 // 引入常量
-const Constant = require('../constant/constant');
+const Constant = require("../constant/constant");
 
 // 配置对象
 let exportObj = {
   update,
-  updatePwd
+  updatePwd,
 };
 // 导出对象，供其它模块调用
 module.exports = exportObj;
@@ -27,7 +27,7 @@ function update(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.body, ['uid', 'name'], cb);
+      Common.checkParams(req.body, ["uid", "name"], cb);
     },
     // 更新方法，依赖校验参数方法
     update: (cb) => {
@@ -37,12 +37,12 @@ function update(req, res) {
           name: req.body.name,
           stage: req.body.stage ? req.body.stage : 0,
           grade: req.body.grade ? req.body.grade : 0,
-          term: req.body.term ? req.body.term : 0
+          term: req.body.term ? req.body.term : 0,
         },
         {
           where: {
-            uid: req.body.uid
-          }
+            uid: req.body.uid,
+          },
         }
       )
         .then(function (result) {
@@ -78,19 +78,19 @@ function updatePwd(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.body, ['uid', 'password'], cb);
+      Common.checkParams(req.body, ["uid", "password"], cb);
     },
     // 更新方法，依赖校验参数方法
     update: (cb) => {
       // 使用user的model中的方法更新
       UserModel.update(
         {
-          password: req.body.password
+          password: req.body.password,
         },
         {
           where: {
-            uid: req.body.uid
-          }
+            uid: req.body.uid,
+          },
         }
       )
         .then(function (result) {

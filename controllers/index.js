@@ -1,32 +1,32 @@
 // 引入公共方法
-const Common = require('../utils/common');
+const Common = require("../utils/common");
 
 // 引入admin表的model
-const UserModel = require('../models/user');
+const UserModel = require("../models/user");
 
 // 引入常量
-const Constant = require('../constant/constant');
+const Constant = require("../constant/constant");
 
 // 引入dateformat包
-const dateFormat = require('dateformat');
+const dateFormat = require("dateformat");
 
 // 引入Token处理方法
-const Token = require('../utils/token');
+const Token = require("../utils/token");
 
 // 设定默认Token过期时间，单位s
 const TOKEN_EXPIRE_SENCOND = 36000;
 
 // 引入fs模块，用于操作文件
-const fs = require('fs');
+const fs = require("fs");
 // 引入path模块，用于操作文件路径
-const path = require('path');
+const path = require("path");
 
 // 配置对象
 let exportObj = {
   login,
   regist,
   upload,
-  delFile
+  delFile,
 };
 // 导出对象，供其它模块调用
 module.exports = exportObj;
@@ -40,18 +40,18 @@ function login(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.body, ['username', 'password'], cb);
+      Common.checkParams(req.body, ["username", "password"], cb);
     },
     // 查询方法，依赖校验参数方法
     query: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         // 通过用户名和密码去数据库中查询
         UserModel.findOne({
           where: {
             username: req.body.username,
-            password: req.body.password
-          }
+            password: req.body.password,
+          },
         })
           .then(function (result) {
             // 查询结果处理
@@ -64,13 +64,13 @@ function login(req, res) {
                 name: result.name,
                 lastLoginAt: dateFormat(
                   result.lastLoginAt,
-                  'yyyy-mm-dd HH:MM:ss'
+                  "yyyy-mm-dd HH:MM:ss"
                 ),
-                createdAt: dateFormat(result.createdAt, 'yyyy-mm-dd HH:MM:ss')
+                createdAt: dateFormat(result.createdAt, "yyyy-mm-dd HH:MM:ss"),
               };
               // 将user的uid保存在Token中
               const adminInfo = {
-                uid: result.uid
+                uid: result.uid,
               };
               // 生成Token
               let token = Token.encrypt(adminInfo, TOKEN_EXPIRE_SENCOND);
@@ -94,19 +94,19 @@ function login(req, res) {
     ],
     // 写入上次登录日期
     writeLastLoginAt: [
-      'query',
+      "query",
       (results, cb) => {
         // 获取前面传递过来的参数admin的id
-        let userId = results['query'];
+        let userId = results["query"];
         // 通过id查询，将当前时间更新到数据库中的上次登录时间
         UserModel.update(
           {
-            lastLoginAt: new Date()
+            lastLoginAt: new Date(),
           },
           {
             where: {
-              uid: userId
-            }
+              uid: userId,
+            },
           }
         )
           .then(function (result) {
@@ -144,7 +144,7 @@ function regist(req, res) {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
       Common.checkParams(
         req.body,
-        ['username', 'password', 'name', 'stage', 'grade', 'term'],
+        ["username", "password", "name", "stage", "grade", "term"],
         cb
       );
     },
@@ -157,7 +157,7 @@ function regist(req, res) {
         name: req.body.name,
         stage: req.body.stage,
         grade: req.body.grade,
-        term: req.body.term
+        term: req.body.term,
       })
         .then(function (result) {
           // 插入结果处理
@@ -186,14 +186,14 @@ function upload(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.file, ['originalname'], cb);
+      Common.checkParams(req.file, ["originalname"], cb);
     },
     // 查询方法，依赖校验参数方法
     save: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         // 获取上传文件的扩展名
-        let lastIndex = req.file.originalname.lastIndexOf('.');
+        let lastIndex = req.file.originalname.lastIndexOf(".");
         let extension = req.file.originalname.substr(lastIndex - 1);
         // 使用时间戳作为新文件名
         let fileName = new Date().getTime() + extension;
@@ -204,7 +204,7 @@ function upload(req, res) {
         // 2.写入的内容
         // 3.回调函数
         fs.writeFile(
-          path.join(__dirname, '../public/upload/' + fileName),
+          path.join(__dirname, "../public/upload/" + fileName),
           req.file.buffer,
           (err) => {
             // 保存文件出错
@@ -215,7 +215,7 @@ function upload(req, res) {
                 // 返回文件名
                 fileName: fileName,
                 // 通过公共方法getImgUrl拼接图片路径
-                path: Common.getImgUrl(req, fileName)
+                path: Common.getImgUrl(req, fileName),
               };
               cb(null);
             }
@@ -237,14 +237,14 @@ function delFile(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.body, ['filename'], cb);
+      Common.checkParams(req.body, ["filename"], cb);
     },
     // 查询方法，依赖校验参数方法
     remove: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         let fileName = req.body.filename;
-        let filepath = path.join(__dirname, '../public/upload/' + fileName);
+        let filepath = path.join(__dirname, "../public/upload/" + fileName);
         fs.unlink(filepath, (err) => {
           if (err) {
             cb(Constant.DEL_FILE_ERROR);
@@ -252,7 +252,7 @@ function delFile(req, res) {
             cb(null);
           }
         });
-      }
+      },
     ],
   };
   // 执行公共方法中的autoFn方法，返回数据

@@ -1,22 +1,22 @@
 // 引入公共方法
-const Common = require('../utils/common');
+const Common = require("../utils/common");
 
 // 引入Class表的model
-const WordModel = require('../models/word');
+const WordModel = require("../models/word");
 
 // 引入常量
-const Constant = require('../constant/constant');
+const Constant = require("../constant/constant");
 
 // 引入dateformat包
-const dateFormat = require('dateformat');
+const dateFormat = require("dateformat");
 
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 // 配置对象
 let exportObj = {
   list,
-  info
+  info,
 };
 // 导出对象，供其它模块调用
 module.exports = exportObj;
@@ -30,11 +30,11 @@ function list(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.query, ['page', 'rows'], cb);
+      Common.checkParams(req.query, ["page", "rows"], cb);
     },
     // 查询方法，依赖校验参数方法
     query: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         // 根据前端提交参数计算SQL语句中需要的offset，即从多少条开始查询
         let offset = req.query.rows * (req.query.page - 1) || 0;
@@ -45,14 +45,14 @@ function list(req, res) {
         // 如果查询单词教材名存在，查询对象增加单词教材名
         if (req.query.word) {
           //whereCondition.word = req.query.word; //精确查询
-          whereCondition.word = {[Op.like]: `%${req.query.word}%`}; //模糊查询
+          whereCondition.word = { [Op.like]: `%${req.query.word}%` }; //模糊查询
         }
         // 通过offset和limit使用model去数据库中查询，并按照创建时间排序
         WordModel.findAndCountAll({
           where: whereCondition,
           offset: offset,
           limit: limit,
-          order: [['created_at', 'DESC']]
+          order: [["created_at", "DESC"]],
         })
           .then(function (result) {
             // 查询结果处理
@@ -69,14 +69,14 @@ function list(req, res) {
                 plural: v.plural,
                 doing: v.doing,
                 done: v.done,
-                createdAt: dateFormat(v.createdAt, 'yyyy-mm-dd HH:MM:ss')
+                createdAt: dateFormat(v.createdAt, "yyyy-mm-dd HH:MM:ss"),
               };
               list.push(obj);
             });
             // 给返回结果赋值，包括列表和总条数
             resObj.data = {
               list,
-              count: result.count
+              count: result.count,
             };
             // 继续后续操作
             cb(null);
@@ -104,11 +104,11 @@ function info(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.params, ['wid'], cb);
+      Common.checkParams(req.params, ["wid"], cb);
     },
     // 查询方法，依赖校验参数方法
     query: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         // 使用admin的model中的方法查询
         WordModel.findByPk(req.params.wid, {})
@@ -125,7 +125,7 @@ function info(req, res) {
                 plural: result.voice,
                 doing: result.doing,
                 done: result.done,
-                createdAt: dateFormat(result.createdAt, 'yyyy-mm-dd HH:MM:ss')
+                createdAt: dateFormat(result.createdAt, "yyyy-mm-dd HH:MM:ss"),
               };
               // 继续后续操作
               cb(null);

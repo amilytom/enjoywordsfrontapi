@@ -1,21 +1,21 @@
 // 引入公共方法
-const Common = require('../utils/common');
+const Common = require("../utils/common");
 
 // 引入dict表的model
-const DictModel = require('../models/dict');
+const DictModel = require("../models/dict");
 
 // 引入常量
-const Constant = require('../constant/constant');
+const Constant = require("../constant/constant");
 
 // 引入dateformat包
-const dateFormat = require('dateformat');
+const dateFormat = require("dateformat");
 
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 // 配置对象
 let exportObj = {
-  list
+  list,
 };
 // 导出对象，供其它模块调用
 module.exports = exportObj;
@@ -35,7 +35,7 @@ function list(req, res) {
     },
     // 查询方法，依赖校验参数方法
     query: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         let searchOption;
         // 设定一个查询条件对象
@@ -43,7 +43,7 @@ function list(req, res) {
         // 如果查询字典名存在，查询对象增加字典名
         if (req.query.dname) {
           //whereCondition.username = req.query.username; //精确查询
-          whereCondition.dname = {[Op.like]: `%${req.query.dname}%`}; //模糊查询
+          whereCondition.dname = { [Op.like]: `%${req.query.dname}%` }; //模糊查询
         }
         // 如果查询姓名存在，查询对象增加姓名
         if (req.query.mark) {
@@ -53,7 +53,7 @@ function list(req, res) {
         if (req.query.dropList) {
           searchOption = {
             where: whereCondition,
-            order: [['did', 'DESC']]
+            order: [["did", "DESC"]],
           };
         }
         // 通过offset和limit使用username的model去数据库中查询，并按照创建时间排序
@@ -68,14 +68,14 @@ function list(req, res) {
               let obj = {
                 did: v.did,
                 mark: v.mark,
-                dname: v.dname
+                dname: v.dname,
               };
               list.push(obj);
             });
             // 给返回结果赋值，包括列表和总条数
             resObj.data = {
               list,
-              count: result.count
+              count: result.count,
             };
             // 继续后续操作
             cb(null);

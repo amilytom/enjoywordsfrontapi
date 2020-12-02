@@ -1,7 +1,7 @@
 // 引入Sequelize模块
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 // 引入数据库连接配置
-const CONFIG = require('./config');
+const CONFIG = require("./config");
 
 // 实例化数据库对象
 var sequelize = new Sequelize(
@@ -11,7 +11,7 @@ var sequelize = new Sequelize(
   {
     host: CONFIG.MYSQL.host,
     // 数据库类型
-    dialect: 'mysql',
+    dialect: "mysql",
 
     // 是否打印日志
     logging: CONFIG.DEBUG ? console.log : false,
@@ -20,11 +20,11 @@ var sequelize = new Sequelize(
     pool: {
       max: 5,
       min: 0,
-      idle: 10000
+      idle: 10000,
     },
 
     // 时区设置
-    timezone: '+08:00'
+    timezone: "+08:00",
   }
 );
 // 导出实例化数据库对象

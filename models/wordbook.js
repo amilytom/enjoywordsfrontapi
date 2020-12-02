@@ -1,41 +1,41 @@
 // 引入Sequelize模块
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 // 引入数据库实例
-const seque = require('../utils/seque');
+const seque = require("../utils/seque");
 
-const WordModel = require('./word');
+const WordModel = require("./word");
 
-const BookModel = require('./book');
+const BookModel = require("./book");
 
 // 定义model
 const Wordbook = seque.define(
-  'Wordbook',
+  "Wordbook",
   {
     // 主键
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true
+      autoIncrement: true,
     },
     // 教材ID
     bookid: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
     // 单词ID
     wordid: {
       type: Sequelize.INTEGER,
-      allowNull: false
-    }
+      allowNull: false,
+    },
   },
   {
     // 是否支持驼峰
     underscored: true,
     // mysql数据库表名
-    tableName: 'stu_wordbook',
+    tableName: "stu_wordbook",
     createdAt: false,
-    updatedAt: false
+    updatedAt: false,
   }
 );
 
@@ -61,12 +61,12 @@ module.exports = Wordbook;
 
 // BelongsTo关联表示一对一关系的外键存在于源模型。
 Wordbook.belongsTo(WordModel, {
-  foreignKey: 'wordid',
-  constraints: false
+  foreignKey: "wordid",
+  constraints: false,
 });
 
 // BelongsTo关联表示一对多关系的外键存在于源模型。
 Wordbook.belongsTo(BookModel, {
-  foreignKey: 'bookid',
-  constraints: false
+  foreignKey: "bookid",
+  constraints: false,
 });

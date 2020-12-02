@@ -1,28 +1,28 @@
 // 引入公共方法
-const Common = require('../utils/common');
+const Common = require("../utils/common");
 
 // 引入Class表的model
-const CaseModel = require('../models/case');
+const CaseModel = require("../models/case");
 
 // 引入单词表的model
-const WordModel = require('../models/word');
+const WordModel = require("../models/word");
 
 // 引入词性表的model
-const SpeechModel = require('../models/speech');
+const SpeechModel = require("../models/speech");
 
 // 引入常量
-const Constant = require('../constant/constant');
+const Constant = require("../constant/constant");
 
 // 引入dateformat包
-const dateFormat = require('dateformat');
+const dateFormat = require("dateformat");
 
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 // 配置对象
 let exportObj = {
   list,
-  info
+  info,
 };
 // 导出对象，供其它模块调用
 module.exports = exportObj;
@@ -36,11 +36,11 @@ function list(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.query, ['page', 'rows'], cb);
+      Common.checkParams(req.query, ["page", "rows"], cb);
     },
     // 查询方法，依赖校验参数方法
     query: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         // 根据前端提交参数计算SQL语句中需要的offset，即从多少条开始查询
         let offset = req.query.rows * (req.query.page - 1) || 0;
@@ -51,12 +51,12 @@ function list(req, res) {
         // 如果查询单词教材名存在，查询对象增加单词教材名
         if (req.query.example) {
           //whereCondition.example = req.query.example; //精确查询
-          whereCondition.example = {[Op.like]: `%${req.query.example}%`}; //模糊查询
+          whereCondition.example = { [Op.like]: `%${req.query.example}%` }; //模糊查询
         }
         if (req.query.translation) {
           //whereCondition.translation = req.query.translation; //精确查询
           whereCondition.translation = {
-            [Op.like]: `%${req.query.translation}%`
+            [Op.like]: `%${req.query.translation}%`,
           }; //模糊查询
         }
         // 通过offset和limit使用model去数据库中查询，并按照创建时间排序
@@ -64,21 +64,21 @@ function list(req, res) {
           where: whereCondition,
           offset: offset,
           limit: limit,
-          order: [['created_at', 'DESC']],
+          order: [["created_at", "DESC"]],
           include: [
             {
               model: WordModel,
-              attributes: ['word'],
+              attributes: ["word"],
               where: {
-                word: {[Op.like]: `%${req.query.word}%`}
-              }
+                word: { [Op.like]: `%${req.query.word}%` },
+              },
             },
             {
               model: SpeechModel,
-              attributes: ['pos', 'posname']
-            }
+              attributes: ["pos", "posname"],
+            },
           ],
-          raw: true
+          raw: true,
         })
           .then(function (result) {
             // 查询结果处理
@@ -90,21 +90,21 @@ function list(req, res) {
               let obj = {
                 id: v.id,
                 wordid: v.wordid,
-                word: v['Word.word'],
+                word: v["Word.word"],
                 example: v.example,
                 voice: v.voice,
                 translation: v.translation,
                 posid: v.posid,
-                pos: v['Speech.pos'],
-                posname: v['Speech.posname'],
-                createdAt: dateFormat(v.createdAt, 'yyyy-mm-dd HH:MM:ss')
+                pos: v["Speech.pos"],
+                posname: v["Speech.posname"],
+                createdAt: dateFormat(v.createdAt, "yyyy-mm-dd HH:MM:ss"),
               };
               list.push(obj);
             });
             // 给返回结果赋值，包括列表和总条数
             resObj.data = {
               list,
-              count: result.count
+              count: result.count,
             };
             // 继续后续操作
             cb(null);
@@ -132,11 +132,11 @@ function info(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.params, ['id'], cb);
+      Common.checkParams(req.params, ["id"], cb);
     },
     // 查询方法，依赖校验参数方法
     query: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         // 使用admin的model中的方法查询
         CaseModel.findByPk(req.params.id, {})
@@ -152,7 +152,7 @@ function info(req, res) {
                 voice: result.voice,
                 translation: result.translation,
                 posid: result.posid,
-                createdAt: dateFormat(result.createdAt, 'yyyy-mm-dd HH:MM:ss')
+                createdAt: dateFormat(result.createdAt, "yyyy-mm-dd HH:MM:ss"),
               };
               // 继续后续操作
               cb(null);
