@@ -90,7 +90,7 @@ function login(req, res) {
             // 传递错误信息到async最终方法
             cb(Constant.DEFAULT_ERROR);
           });
-      }
+      },
     ],
     // 写入上次登录日期
     writeLastLoginAt: [
@@ -126,8 +126,8 @@ function login(req, res) {
             // 传递错误信息到async最终方法
             cb(Constant.DEFAULT_ERROR);
           });
-      }
-    ]
+      },
+    ],
   };
   // 执行公共方法中的autoFn方法，返回数据
   Common.autoFn(tasks, res, resObj);
@@ -171,7 +171,7 @@ function regist(req, res) {
           // 传递错误信息到async最终方法
           cb(Constant.DEFAULT_ERROR);
         });
-    }
+    },
   };
   // 执行公共方法中的autoFn方法，返回数据
   Common.autoFn(tasks, res, resObj);
@@ -221,8 +221,8 @@ function upload(req, res) {
             }
           }
         );
-      }
-    ]
+      },
+    ],
   };
   // 执行公共方法中的autoFn方法，返回数据
   Common.autoFn(tasks, res, resObj);
@@ -253,7 +253,7 @@ function delFile(req, res) {
           }
         });
       }
-    ]
+    ],
   };
   // 执行公共方法中的autoFn方法，返回数据
   Common.autoFn(tasks, res, resObj);

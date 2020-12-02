@@ -1,21 +1,21 @@
 // 引入公共方法
-const Common = require('../utils/common');
+const Common = require("../utils/common");
 
 // 引入Class表的model
-const SpeechModel = require('../models/speech');
+const SpeechModel = require("../models/speech");
 
 // 引入常量
-const Constant = require('../constant/constant');
+const Constant = require("../constant/constant");
 
 // 引入dateformat包
-const dateFormat = require('dateformat');
+const dateFormat = require("dateformat");
 
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 // 配置对象
 let exportObj = {
-  info
+  info,
 };
 // 导出对象，供其它模块调用
 module.exports = exportObj;
@@ -29,11 +29,11 @@ function info(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.params, ['pid'], cb);
+      Common.checkParams(req.params, ["pid"], cb);
     },
     // 查询方法，依赖校验参数方法
     query: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         // 使用admin的model中的方法查询
         SpeechModel.findByPk(req.params.pid, {})
@@ -47,7 +47,7 @@ function info(req, res) {
                 pos: result.pos,
                 speech: result.speech,
                 posname: result.posname,
-                type: result.type
+                type: result.type,
               };
               // 继续后续操作
               cb(null);
@@ -63,8 +63,8 @@ function info(req, res) {
             // 传递错误信息到async最终方法
             cb(Constant.DEFAULT_ERROR);
           });
-      }
-    ]
+      },
+    ],
   };
   // 执行公共方法中的autoFn方法，返回数据
   Common.autoFn(tasks, res, resObj);

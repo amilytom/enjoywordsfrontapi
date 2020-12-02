@@ -105,8 +105,8 @@ function list(req, res) {
             // 传递错误信息到async最终方法
             cb(Constant.DEFAULT_ERROR);
           });
-      }
-    ]
+      },
+    ],
   };
   // 执行公共方法中的autoFn方法，返回数据
   Common.autoFn(tasks, res, resObj);
@@ -158,8 +158,8 @@ function info(req, res) {
             // 传递错误信息到async最终方法
             cb(Constant.DEFAULT_ERROR);
           });
-      }
-    ]
+      },
+    ],
   };
   // 执行公共方法中的autoFn方法，返回数据
   Common.autoFn(tasks, res, resObj);
@@ -202,7 +202,7 @@ function add(req, res) {
           // 传递错误信息到async最终方法
           cb(Constant.DEFAULT_ERROR);
         });
-    }
+    },
   };
   // 执行公共方法中的autoFn方法，返回数据
   Common.autoFn(tasks, res, resObj);
@@ -258,7 +258,7 @@ function update(req, res) {
           // 传递错误信息到async最终方法
           cb(Constant.DEFAULT_ERROR);
         });
-    }
+    },
   };
   // 执行公共方法中的autoFn方法，返回数据
   Common.autoFn(tasks, res, resObj);
@@ -300,7 +300,7 @@ function remove(req, res) {
           // 传递错误信息到async最终方法
           cb(Constant.DEFAULT_ERROR);
         });
-    }
+    },
   };
   // 执行公共方法中的autoFn方法，返回数据
   Common.autoFn(tasks, res, resObj);

@@ -1,24 +1,24 @@
 // 引入公共方法
-const Common = require('../utils/common');
+const Common = require("../utils/common");
 
 // 引入Class表的model
-const TestModel = require('../models/test');
+const TestModel = require("../models/test");
 
-const TrainModel = require('../models/train');
+const TrainModel = require("../models/train");
 
 // 引入常量
-const Constant = require('../constant/constant');
+const Constant = require("../constant/constant");
 
 // 引入dateformat包
-const dateFormat = require('dateformat');
+const dateFormat = require("dateformat");
 
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 // 配置对象
 let exportObj = {
   list,
-  info
+  info,
 };
 // 导出对象，供其它模块调用
 module.exports = exportObj;
@@ -32,11 +32,11 @@ function list(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.query, ['page', 'rows'], cb);
+      Common.checkParams(req.query, ["page", "rows"], cb);
     },
     // 查询方法，依赖校验参数方法
     query: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         // 根据前端提交参数计算SQL语句中需要的offset，即从多少条开始查询
         let offset = req.query.rows * (req.query.page - 1) || 0;
@@ -47,24 +47,24 @@ function list(req, res) {
         // 如果查询单词教材名存在，查询对象增加单词教材名
         if (req.query.question) {
           //whereCondition.word = req.query.word; //精确查询
-          whereCondition.question = {[Op.like]: `%${req.query.question}%`}; //模糊查询
+          whereCondition.question = { [Op.like]: `%${req.query.question}%` }; //模糊查询
         }
         // 通过offset和limit使用model去数据库中查询，并按照创建时间排序
         TestModel.findAndCountAll({
           where: whereCondition,
           offset: offset,
           limit: limit,
-          order: [['created_at', 'DESC']],
+          order: [["created_at", "DESC"]],
           include: [
             {
               model: TrainModel,
-              attributes: ['label'],
+              attributes: ["label"],
               where: {
-                label: {[Op.like]: `%${req.query.label}%`}
-              }
-            }
+                label: { [Op.like]: `%${req.query.label}%` },
+              },
+            },
           ],
-          raw: true
+          raw: true,
         })
           .then(function (result) {
             // 查询结果处理
@@ -76,20 +76,20 @@ function list(req, res) {
               let obj = {
                 tid: v.tid,
                 labelid: v.labelid,
-                label: v['Train.label'],
+                label: v["Train.label"],
                 question: v.question,
                 answer: v.answer,
                 respon: v.respon,
                 isright: v.isright,
                 description: v.description,
-                createdAt: dateFormat(v.createdAt, 'yyyy-mm-dd HH:MM:ss')
+                createdAt: dateFormat(v.createdAt, "yyyy-mm-dd HH:MM:ss"),
               };
               list.push(obj);
             });
             // 给返回结果赋值，包括列表和总条数
             resObj.data = {
               list,
-              count: result.count
+              count: result.count,
             };
             // 继续后续操作
             cb(null);
@@ -101,8 +101,8 @@ function list(req, res) {
             // 传递错误信息到async最终方法
             cb(Constant.DEFAULT_ERROR);
           });
-      }
-    ]
+      },
+    ],
   };
   // 执行公共方法中的autoFn方法，返回数据
   Common.autoFn(tasks, res, resObj);
@@ -117,11 +117,11 @@ function info(req, res) {
     // 校验参数方法
     checkParams: (cb) => {
       // 调用公共方法中的校验参数方法，成功继续后面操作，失败则传递错误信息到async最终方法
-      Common.checkParams(req.params, ['tid'], cb);
+      Common.checkParams(req.params, ["tid"], cb);
     },
     // 查询方法，依赖校验参数方法
     query: [
-      'checkParams',
+      "checkParams",
       (results, cb) => {
         // 使用admin的model中的方法查询
         TestModel.findByPk(req.params.tid, {})
@@ -138,7 +138,7 @@ function info(req, res) {
                 respon: result.respon,
                 isright: result.isright,
                 description: result.description,
-                createdAt: dateFormat(result.createdAt, 'yyyy-mm-dd HH:MM:ss')
+                createdAt: dateFormat(result.createdAt, "yyyy-mm-dd HH:MM:ss"),
               };
               // 继续后续操作
               cb(null);
@@ -154,8 +154,8 @@ function info(req, res) {
             // 传递错误信息到async最终方法
             cb(Constant.DEFAULT_ERROR);
           });
-      }
-    ]
+      },
+    ],
   };
   // 执行公共方法中的autoFn方法，返回数据
   Common.autoFn(tasks, res, resObj);

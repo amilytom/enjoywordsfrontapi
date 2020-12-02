@@ -41,7 +41,7 @@ const Token = {
         data: e
       };
     }
-  }
+  },
 };
 
 // 导出Token对象，方便其他模块调用
