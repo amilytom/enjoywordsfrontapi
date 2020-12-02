@@ -165,4 +165,5 @@ function info(req, res) {
     ],
   };
   // 执行公共方法中的autoFn方法，返回数据
-  Common.autoFn(tasks, res, re
+  Common.autoFn(tasks, res, resObj);
+}

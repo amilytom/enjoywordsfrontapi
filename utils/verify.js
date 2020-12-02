@@ -4,13 +4,13 @@
  * */
 
 // 引入Token处理的controller
-const Token = require('./token');
+const Token = require("./token");
 // 引入常量
-const Constant = require('../constant/constant');
+const Constant = require("../constant/constant");
 
 // 配置中间对象
 const exportObj = {
-  verifyToken
+  verifyToken,
 };
 // 导出对象，供其他模块调用
 module.exports = exportObj;
@@ -23,7 +23,7 @@ module.exports = exportObj;
  * */
 function verifyToken(req, res, next) {
   // 如果请求路径是/login,即登录页，则跳过，继续下一步
-  if (req.path === '/login') return next();
+  if (req.path === "/login") return next();
   // 从请求投中获取参数token
   let token = req.headers.token;
   // 调用TokenController中的Token解密方法，对参数token进行解密
